@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>음악이 필요한 순간, 멜론</title>
+  <link rel="icon" type="image/png" sizes="16x16" href="img/images/favicon.png">
+  <style>
+    @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    html, body {
+     height: 100%;
+     scroll-behavior: smooth;
+     scroll-snap-type: y mandatory; /* 수직 스냅 */
+     /* overflow-y: scroll; */
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+      position: relative;
+      /* overflow-y: hidden; 스크롤 제거 */
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    /* 반짝 */
+    .twinkle {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      pointer-events: none;
+      animation: blink 2.5s infinite ease-in-out;
+      opacity: 0;
+      z-index: 50;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(45deg); }
+    }
+
+    .container {
+      max-width: 1920px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 120px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      z-index: 1000;
+      transition: background-image 0.5s ease;
+    }
+
+    nav.page1 { background-image: url('img/nav/nav1.png'); }
+    nav.page2 { background-image: url('img/nav/nav2.png'); }
+    nav.page3 { background-image: url('img/nav/nav3.png'); }
+    nav.page4 { background-image: url('img/nav/nav4.png'); }
+    nav.page5 { background-image: url('img/nav/nav5.png'); }
+    nav.page6 { background-image: url('img/nav/nav6.png'); }
+
+    nav ul {
+      list-style: none;
+      position: relative;
+      height: 100%;
+    }
+
+    nav ul li {
+      position: absolute;
+      top: 20px;
+    }
+
+    nav ul li.gap1 { left: 140px; }
+    nav ul li.gap2 { left: 410px; }
+    nav ul li.gap3 { left: 675px; }
+    nav ul li.gap4 { left: 980px; }
+    nav ul li.gap5 { left: 1330px; }
+    nav ul li.gap6 { left: 1665px; }
+
+    nav ul li a {
+      font-family: 'NanumSquare', sans-serif;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: #45B649;
+      transform: scale(1.5);
+      position: relative;
+      z-index: 10;
+    }
+    section {
+      /* min-height: 100vh; */
+      width: 100%;
+      /* height: calc(100vh -120px); */
+      height: 100vh;
+      padding-top: 188px;
+      padding-bottom: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: visible;
+      box-sizing: border-box;
+      scroll-snap-align: start;
+      /* border:3px solid red; */
+    }
+
+    #page1 {
+      background-image: url(img/images/background1.png);
+      background-size: cover;
+      background-position: center;
+      position: relative; /* 위치 기준 */
+    }
+
+    /* 페이지 1 문구 */
+    .top-left-text {
+      position: absolute;
+      top: 150px;       /* 페이지 상단에서 간격 */
+      left: 50px;      /* 왼쪽에서 간격 */
+      color: white;
+      font-size: 4rem;
+      font-weight: bold;
+      line-height: 1.4; /* 줄간격 기본값, 조절 가능 */
+      letter-spacing: 0.1em; /* 자간 조절, 필요하면 값 조절 */
+      z-index: 10;     /* 영상 위에 */
+      display: flex;
+      flex-direction: column;
+      gap: px;  /* 줄 간격 조절, 원하는 만큼 숫자 변경 */
+      text-align: left;
+    }
+
+    .bottom-right-text {
+      position: absolute;
+      bottom: 70px;    /* 페이지 하단에서 간격 */
+      right: 50px;     /* 오른쪽에서 간격 */
+      color: #ffffff; 
+      line-height: 1.4; /* 줄간격 기본값, 조절 가능 */
+      letter-spacing: 0.1em; /* 자간 조절, 필요하면 값 조절 */
+      font-size: 4.3rem;
+      font-weight: bold;
+      z-index: 10;
+      text-align: right;
+    }
+
+    #page2 { background-image: url(img/images/background2.png); background-size: cover; background-position: center;
+    overflow: visible; /* <-- 이거 추가! */
+    position: relative; /* <-- 필수 */ }
+    #page3 { background-image: url(img/images/background3.png); background-size: cover; background-position: center; }
+    #page4 { background-image: url(img/images/background__.png); background-size: cover; background-position: center; }
+    #page5 { background-image: url(img/images/background5.png); background-size: cover; background-position: center; }
+    #page6 { background-image: url(img/images/background6.png); background-size: cover; background-position: center; }
+
+    .final-message {
+      position: absolute;
+      top: 150px;
+      left: 90px;
+      font-family: 'NanumSquare', sans-serif;
+      font-size: 60px;
+      line-height: 1.5;
+      color: white;
+      z-index: 10;
+      text-align: left;
+    }
+
+    .final-message .melon {
+      color: #4EC600;
+      font-weight: bold;
+    }
+
+    .playlist-text {
+      font-family: 'NanumSquare', sans-serif;
+      font-size: 60px;
+      font-weight: bold;
+      color: #ffffff;
+      text-align: right;
+      z-index: 5;
+      position: absolute;
+      align-self: flex-start;
+      bottom: 150px;         /* 아래 여백 */
+      right: 120px;         /* 오른쪽 여백 */
+      z-index: 5;    /* 왼쪽 정렬 */
+    }
+    .playlist-text .melon{
+      color: #4EC600;
+    }
+
+    /* 페이지 3 캐로셀 */
+    .carousel-wrapper {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      z-index: 9999;
+    }
+
+    .prev-btn img,
+    .next-btn img {
+      width: 50px;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .carousel-overlay {
+        position: absolute;
+        top: 190px;        /* 세로 가운데 */
+        left: 50%;       /* 가로 가운데 */
+        transform: translate(-50%, -50%);  /* 정확한 중앙 정렬 */
+        width: 257px;    /* 원하는 크기 */
+        pointer-events: none;  /* 클릭 무시 */
+        z-index: 9999 !important;   /* 아주 높은 z-index로 항상 위에 */
+    }
+
+    /* 호버 시 색상 변경 : 필터로 색조 변경 */
+    .prev-btn:hover img,
+    .next-btn:hover img {
+      filter: invert(53%) sepia(89%) saturate(664%) hue-rotate(80deg) brightness(100%) contrast(100%);
+      /* 초록색 계열로 변경됨 */
+    }
+
+    .prev-btn, .next-btn {
+      font-size: 0;
+      color: transparent;
+      background: transparent;
+      border: none;
+    }
+
+    .prev-btn:hover, .next-btn:hover {
+      color: #4EC600;
+    }
+
+    .carousel {
+      position: relative;
+      width: 70%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .carousel img {
+      position: absolute;
+      top: 50%;
+      opacity: 0;
+      width: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease, width 0.7s ease, left 0.7s ease, right 0.7s ease, transform 0.7s ease;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .carousel img.prev {
+      left: 5%;
+      right: auto;
+      opacity: 0.6;
+      width: 15%;
+      pointer-events: auto;
+      z-index: 2;
+      transform: translateY(-50%);
+    }
+
+    .carousel img.next {
+      right: 5%;
+      left: auto;
+      opacity: 0.6;
+      width: 15%;
+      pointer-events: auto;
+      z-index: 2;
+      transform: translateY(-50%);
+    }
+
+    .carousel img.active {
+      left: 50%;
+      right: auto;
+      opacity: 1;
+      width: 30%;
+      pointer-events: auto;
+      z-index: 3;
+      transform: translate(-50%, -50%);
+    }
+
+    .text-image {
+      width: 600px;
+      position: relative;
+      top: 40px;
+      z-index: 2;
+    }
+
+    /* 페이지 2 점프 캐릭터 */
+    .character-animation-page2 {
+      position: absolute;
+      top: 200px;
+      right: 200px;
+      width: 300px; /* 170px x 7프레임 기준 */
+      height: 1980px; /* 원본 비율 유지 시 대략 */
+      background-image: url('img/images/animation/character_jump.png');
+      background-repeat: no-repeat;
+      animation: jumpAnim 1s steps(7) infinite;
+      /* transform: scale(0.35) rotate(-10deg);
+      transform-origin: center center; */
+      z-index: 9;
+      background-size: 700%;
+    }
+
+    @keyframes jumpAnim {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: -2100px 0;
+      }
+    }
+
+    /* 페이지 6 리듬 캐릭터 */
+
+    .character-animation-page6 {
+      width: 482.25px;; /* 한 프레임의 너비 (4537 / 8) */
+      height: 483.3px;
+      background-size: 3865.5px 483.3px; /* 전체 이미지 크기를 30%로 축소 */
+      background-image: url('img/images/animation/character_rhythm.png');
+      background-repeat: no-repeat;
+      animation: rhythmAnim 1s steps(8) infinite;
+      position: absolute;
+      right: -10%;
+      bottom: 50px;
+      transform: translateX(-50%);
+      z-index: 10;
+      bottom: 30px; /* 페이지 하단에서 간격을 50px로 설정 */
+      }
+
+    @keyframes rhythmAnim {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: -3865.5px 0;
+    }
+    }
+    
+    .button-image {
+      margin-top: 20px;
+      width: 250px; /* 원하는 크기로 조절 */
+      cursor: pointer;
+      transition: transform 0.3s;
+      z-index: 10;
+      position: relative;
+    }
+
+    .button-image:hover {
+      transform: scale(1.05);
+    }
+
+/* 페이지5 탭 버튼 */
+    .tab-buttons-wrapper {
+      position: absolute; /* ← 이거 중요! */
+      top: 500px;          /* ← 살짝 위로 올리기 (작게 줄일수록 위로 감) */
+      right: 300px;
+      width: 450px; /* 이미지 width */
+      height: 225px; /* 75px x 3 */
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .tab-buttons {
+      width: 100%;
+      height: 100%;
+      background-image: url('img/images/taste_hoverX.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+
+    .tab-contents {
+      position: relative;
+      top: 200px;
+      left: 0;
+      width: auto;
+      z-index: 1;
+      display: none; /* 완전히 숨김 */
+    }
+
+    .tab-image {
+      display: none;
+      width: 100%;
+      max-width: none; /* << 이거 없애면 커지지 않아 */
+    }
+
+    .tab-image.active {
+      display: block;
+    }
+
+    /* 탭했을 때 이미지 */
+    .tab-display-area {
+      position: absolute;
+      top: 240px; /* 탭 아래 */
+      left: 400px; /* 탭 오른쪽 */
+      z-index: 99;
+    }
+
+    .side-image {
+      /* display: none; */
+      width: 900px; /* << 이거 더 크게! 원하던 만큼 */
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+      position: absolute;
+      transform: scale(0.9); /* 약간 축소된 상태에서 */
+      pointer-events: none;  /* 클릭 못하게 */
+      transform-origin: center center;
+      top: 0px;
+    }
+    
+    /* 탭했을 때 각 이미지 사이즈 조절 */
+    .side-image--first {
+      top: 80px;
+    }
+
+    .side-image--second {
+      top: 40px; /* 원하는 만큼 조절 */
+      width: 800px;
+      left: 0px;
+    }
+
+    .side-image--tiktok {
+      left: -100px !important; /* 원하는 만큼 왼쪽으로 */
+      top: 20px; /* 위치 조정 필요시 */
+      width: 1000px;
+    }
+
+    .side-image.active {
+      /* display: block; */
+      opacity: 1;
+      transform: scale(1); /* 클릭되면 살짝 커지면서 등장! */
+      pointer-events: auto;  /* 클릭 가능하게 */
+    }
+
+    .tab-display-area {
+      position: absolute;
+      top: 80px;
+      left: 280px;  /* ← 기존보다 오른쪽으로 더 이동 */
+      z-index: 6;
+    }
+
+    /* 휴대폰 이미지 */
+    .phone-image {
+      width: 100%;
+      height: auto;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      display: block;
+    }
+    .phone-frame {
+      position: absolute;
+      top: 120px;
+      right: 180px;
+      width: 400px;
+      height: 800px;
+      /* border: 1px solid #ccc; 연한 회색 테두리 */
+      overflow: hidden;       /* 넘치는 부분 잘라냄 */
+      border-radius: 15px;     /* 모서리 약간 둥글게 (선택) */
+      z-index: 5;
+    }
+
+    /* 페이지 6 다운로드 이미지 2개 */
+    .clickable-images {
+      position: absolute;
+      bottom: 30%; /* 원하는 만큼 아래 여백 */
+      left: 20%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 40px; /* 이미지 간 간격 */
+      z-index: 20;
+    }
+
+    /* 각각의 이미지 */
+    .click-img {
+      width: 240px; /* 기본 사이즈 */
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border-radius: 10px;
+    }
+
+    .click-img:hover {
+      transform: scale(1.1);
+    }
+
+    /* 페이지 6 유튜브 영상 */
+    .youtube-box {
+  position: relative;
+  width: 700px;
+  height: 400px;
+  margin-left: 40%;   /* 왼쪽에서 밀어내기 */
+  /* margin-right: 100px; → 오른쪽 이동 가능 */
+  top: 70px;
+}
+
+    /* 페이지 6 아이콘 3개 */
+    .icon-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 200px;
+      position: relative; /* 위치 조정 용 */
+      top: 300px; /* 페이지 내에서 아이콘들을 아래로 내리기 */
+      left: -30%;
+    }
+
+    /* 아이콘 이미지 스타일 */
+    .icon {
+      width: 80px; /* 아이콘 기본 크기 */
+      height: 80px;
+      transition: transform 0.3s ease, filter 0.3s ease; /* 부드러운 효과 추가 */
+      cursor: pointer;
+      margin: 0 20px; /* 아이콘들 사이에 여백을 추가 */
+    }
+
+    /* 마우스를 올렸을 때 아이콘 크기 증가 */
+    .icon:hover {
+      transform: scale(1.2); /* 20% 확대 */
+      filter: brightness(1.2); /* 밝기 효과 추가 */
+    }
+
+    /* 페이지 2 모달 오버레이 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6); /* 어두운 배경 */
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    /* 모달 이미지 */
+    .modal-content img {
+      max-width: 900px;
+      max-height: 80vh;
+      border-radius: 15px;
+      /* box-shadow: 0 0 20px rgba(0,0,0,0.5); */
+      padding: 0 }
+
+      .modal-content {
+      background: none;
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+  .modal-bg {
+    max-width: 900px;
+    max-height: 80vh;
+    border-radius: 0px;
+    box-shadow: none
+  }
+
+  /* 2x2 격자 이미지 영역 */
+  .modal-icons-grid {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2열 */
+    gap: 10px; /* ← 이 값을 줄이면 간격이 좁아져! 예: 10px, 5px 등 */
+    justify-items: center; /* 가운데 정렬 */
+    align-items: center;
+    z-index: 10;
+  }
+
+  /* 각각의 아이콘 이미지 */
+  .modal-icon {
+    width: 400px; /* 필요에 따라 조절 가능 */
+    height: auto;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .modal-icon:hover {
+    transform: scale(1.05);
+  }
+
+/* X 아이콘 버튼 위치 및 스타일 */
+.close-btn {
+  position: absolute;
+  top: 175px;
+  right: 460px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* 이미지 아이콘 크기 */
+.close-btn img {
+  width: 45px;     /* 필요하면 숫자 조정 가능 */
+  height: 45px;
+  object-fit: contain;
+}
+
+  /* 페이지 1 유튜브 영상 */
+  .youtube-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* 배경보다 더 아래! */
+  overflow: hidden;
+  }
+
+  .youtube-wrapper iframe {
+    width: 70%;
+    height: 70%;
+    pointer-events: none; /* 클릭 못 하게 */
+    transform: translate(-10%, 25%) scale(1.2); /* ← X, Y */
+  }
+
+  /* 페이지 4 캐로셀  */
+  #phone-screen .screen-image {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+  display: block; /* display:none 대신 opacity로 처리 */
+}
+
+#phone-screen .screen-image.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.phone-mockup {
+  width: 350px;      /* 크기 원하는 대로 조절 */
+  height: auto;      /* 비율 유지 */
+  position: relative; /* 위치 조절 가능하게 */
+  bottom: 50px;          /* 위쪽으로 20px 내려옴 */
+  left: 35px;         /* 왼쪽으로 50px 이동 */
+  display: block;
+  /* 필요에 따라 아래 항목도 추가 가능 */
+  /* transform: translate(0, 0); */
+}
+
+#phone-screen {
+  position: absolute; /* 위치 기준 */
+  width: 260px; /* 목업보다 약간 작게 조절 가능 */
+  height: 390px;
+  overflow: hidden;
+  top: 29.2%;  /* 위치 조정 */
+  right: 41.5%; /* 필요시 조정 */
+  z-index: 29;
+  transform: scale(0.8); /* 원하는 크기로 축소 (예: 80%) */
+}
+
+.screen-image {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.screen-image.active {
+  display: block;
+  z-index: 2;
+}
+
+/* 페이지4 버튼 */
+.button-wrapper {
+  position: relative;
+  bottom: 50px;
+  left: 40px;
+  z-index: 30;
+}
+
+#randomBtn {
+  background-color: #4EC600; /* 연두색 */
+  border: none;
+  border-radius: 25px; /* 둥근 모양 */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'NanumSquare', sans-serif; /* 기존에 사용하신 폰트 적용 */
+  box-shadow: 0 4px 8px rgba(78, 198, 0, 0.4);
+  user-select: none;
+}
+
+#randomBtn:hover {
+  background-color: #3BA100; /* 좀 더 진한 초록으로 호버 효과 */
+}
+
+/* 페이지 5 */
+
+@font-face { 
+  font-family: 'Ownglyph_ParkDaHyun';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.blinkText {
+  font-family: 'Ownglyph_ParkDaHyun';
+  font-size: 2rem;
+  color: #ffffff;
+  animation: blinkText 2s infinite, rotateLeft 2s infinite;
+  text-align: center;
+  margin-top: 290px; /* 아래쪽으로 너무 안내려가게 */
+  left: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  position: relative; /* 위치 조정을 위한 설정 */
+}
+
+/* 깜빡이는 효과 */
+@keyframes blinkText {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 왼쪽으로 살짝 회전 */
+@keyframes rotateLeft {
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(0deg); }
+}
+
+  </style>
+</head>
+<body>
+  <!-- 내비게이션 -->
+  <nav class="page1">
+    <div class="container">
+      <ul>
+        <li class="gap1"><a href="#page1" class="active">HOME</a></li>
+        <li class="gap2"><a href="#page2">PROMOTION</a></li>
+        <li class="gap3"><a href="#page3">PLAYLIST</a></li>
+        <li class="gap4"><a href="#page4">MUSIC DNA</a></li>
+        <li class="gap5"><a href="#page5">TASTE</a></li>
+        <li class="gap6"><a href="#page6">DOWNROAD</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="page1">
+  <div class="youtube-wrapper">
+    <iframe
+      src="https://www.youtube.com/embed/ec2z-PEZ4Yo?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=ec2z-PEZ4Yo"
+      title="YouTube video player"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+  <div class="top-left-text">
+    <span>음악이</span>
+    <span>필요한</span>
+    <span>순간,</span>
+  </div>
+
+  <div class="bottom-right-text">
+    <span>멜론과</span><br>
+    <span>함께</span>
+  </div>
+</section>
+
+  <!-- 페이지 2 -->
+  <section id="page2">
+    <img src="img/images/promotion1.png" alt="첫구매 100원" class="text-image" />
+    <!-- 버튼용 이미지 추가 -->
+    <img src="img/images/promotion_modal.png" alt="버튼" class="button-image" />
+
+    <div class="character-animation-page2"></div>
+
+    <!-- 모달 -->
+    <div id="modal-overlay" class="modal-overlay">
+      <div class="modal-content">
+    <img src="img/images/modal1.png" alt="모달 배경" class="modal-bg" />
+
+    <!-- X 아이콘 추가 -->
+    <button class="close-btn">
+      <img src="img/images/close.png" alt="닫기" />
+    </button>
+
+    <div class="modal-icons-grid">
+      <img src="img/images/modal2.png" alt="아이콘1" class="modal-icon" />
+      <img src="img/images/modal3.png" alt="아이콘2" class="modal-icon" />
+      <img src="img/images/modal4.png" alt="아이콘3" class="modal-icon" />
+      <img src="img/images/modal5.png" alt="아이콘4" class="modal-icon" />
+    </div>
+   </div>
+  </div>
+
+  </section>
+
+  <!-- 캐로셀 포함 page3 -->
+  <section id="page3">
+  <!-- 플레이리스트 캐로셀 -->
+    <div class="carousel-wrapper">
+      <button class="prev-btn">
+        <img src="img/images/carousel2.png" alt="이전" />
+      </button>
+      <div class="carousel">
+        <img src="img/images/playlist1.png" alt="플리1" />
+        <img src="img/images/playlist2.png" alt="플리2" />
+        <img src="img/images/playlist3.png" alt="플리3" />
+        <img src="img/images/playlist4.png" alt="플리4" />
+        <img src="img/images/playlist6.png" alt="플리7" />
+        <img src="img/images/playlist7.png" alt="플리8" />
+        <img src="img/images/playlist8.png" alt="플리9" />
+      </div>
+      
+              <!-- 가운데 이미지 위에 올릴 이미지 -->
+        <img src="img/images/carousel3.png" alt="오버레이" class="carousel-overlay" />
+
+      <button class="next-btn">
+        <img src="img/images/carousel1.png" alt="다음" />
+      </button>
+    </div>
+
+    <!-- 문구 -->
+  <div class="playlist-text">
+    오늘의 <span class="melon">기분</span>에 맞는 <br/><br/>
+    <span class="melon">다양한 플레이리스트</span>를 만나보세요
+  </div>
+
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 10%; left: 10%; animation-delay: 0s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 30%; left: 70%; animation-delay: 1s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 60%; left: 20%; animation-delay: 0.5s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 80%; left: 70%; animation-delay: 2s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 50%; left: 85%; animation-delay: 1.5s;" />
+
+
+  </section>
+
+  <!-- 페이지 4 -->
+  <section id="page4">
+  <img src="img/images/phone5.png" alt="휴대폰 목업" class="phone-mockup" />
+  <div id="phone-screen">
+    <img class="screen-image" src="img/images/phone6-01.png" alt="화면 이미지" />
+    <img class="screen-image" src="img/images/phone6-02.png" alt="화면 이미지" />
+    <img class="screen-image" src="img/images/phone6-03.png" alt="화면 이미지" />
+    <img class="screen-image" src="img/images/phone6-04.png" alt="화면 이미지" />
+  </div>
+  <div class="button-wrapper">
+    <button id="randomBtn">나의 뮤직 DNA 확인하기</button>
+  </div>
+</section>
+  
+  <!-- /* 페이지 5 */ -->
+  <section id="page5">
+  <div class="tab-buttons-wrapper">
+  <div class="tab-buttons" id="tabButtons"></div>
+</div>
+
+<div class="tab-contents">
+  <img src="img/images/taste_hover1.png" class="tab-image" />
+  <img src="img/images/taste_hover2.png" class="tab-image" />
+  <img src="img/images/taste_hover3.png" class="tab-image" />
+</div>
+
+  <!-- 탭헀을 때 이미지 -->
+  <div class="tab-display-area">
+  <img src="img/images/taste_mixup.png" class="active side-image side-image--first" />
+  <img src="img/images/taste_profilemusic.png" class="side-image side-image--second" />
+  <img src="img/images/taste_tiktok.png" class="side-image side-image--tiktok" />
+  </div>
+
+  <!-- 휴대폰 -->
+  <div class="phone-frame">
+  <img src="img/images/phone3.png" class="phone-image" />
+  </div>
+
+  <div class="blinkText">click!</div>
+
+
+
+  </section>
+
+  <!-- 페이지6 -->
+  <section id="page6" style="position: relative;">
+    <div class="final-message">
+    나만을 위한 <span class="melon">멜론</span>의 새로운 변화,<br/><br>앞으로도 함께 해요
+  </div>
+
+ <!-- 유튜브 영상 -->
+    <div class="youtube-box">
+      <iframe width="700" height="400"
+        src="https://www.youtube.com/embed/YYH_whXLm1I"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+
+  <!-- 애니메이션 추가할 캐릭터 -->
+  <div class="character-animation-page6"></div>
+
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 10%; left: 10%; animation-delay: 0s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 30%; left: 50%; animation-delay: 1s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 60%; left: 20%; animation-delay: 0.5s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 80%; left: 70%; animation-delay: 2s;" />
+  <img src="img/images/animation/twinkle.png" class="twinkle" style="top: 50%; left: 85%; animation-delay: 1.5s;" />
+    </div>
+
+    <!-- 이미지 아이콘들 추가 -->
+  <div class="icon-container">
+    <img src="img/images/download3.png" alt="아이콘 1" class="icon" />
+    <img src="img/images/download4.png" alt="아이콘 2" class="icon" />
+    <img src="img/images/download5.png" alt="아이콘 3" class="icon" />
+  </div>
+
+    <!-- 앱다운로드 이미지 -->
+<div class="clickable-images">
+  <a href="https://play.google.com/store/apps/details?id=com.iloen.melon&hl=ko">
+  <img src="img/images/download1.png" alt="버튼1" class="click-img" />
+  </a>
+  <a href="https://apps.apple.com/kr/app/%EB%A9%9C%EB%A1%A0-melon/id415597317">
+  <img src="img/images/download2.png" alt="버튼2" class="click-img" />
+  </a>
+</div>
+
+  </section>
+
+  <!-- JavaScript -->
+  <script>
+     // 네비게이션 배경 전환
+  const nav = document.querySelector('nav');
+  const sections = document.querySelectorAll('section');
+  const menuLinks = document.querySelectorAll('nav ul li a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        nav.className = id;
+        menuLinks.forEach(link => link.classList.remove('active'));
+        const activeLink = document.querySelector(`nav ul li a[href="#${id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    });
+  }, { threshold: 0.6 });
+
+  sections.forEach(section => observer.observe(section));
+
+  // 정확한 위치로 이동
+    menuLinks.forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+
+        currentSectionIndex = [...allSections].indexOf(targetElement); // ← 중요!
+
+        targetElement.scrollIntoView({
+        behavior: 'smooth'
+        });
+      });
+
+    });
+
+
+    // 페이지 3 캐로셀 기능
+const carousel = document.querySelector('.carousel');
+const images = carousel.querySelectorAll('img:not(.carousel-overlay)');  // 오버레이 제외
+const overlayImage = carousel.querySelector('.carousel-overlay'); // 따로 분리
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+
+let currentIndex = 0;
+
+function updateCarousel() {
+  images.forEach((img) => {
+    img.classList.remove('active', 'prev', 'next');
+    img.style.opacity = '0';
+    img.style.pointerEvents = 'none';
+    img.style.width = '0';
+    img.style.left = '50%';
+    img.style.right = 'auto';
+    img.style.transform = 'translateY(-50%)';
+    img.style.zIndex = '1';
+  });
+
+  const prevIndex = (currentIndex - 1 + images.length) % images.length;
+  const nextIndex = (currentIndex + 1) % images.length;
+
+  images[prevIndex].classList.add('prev');
+  images[prevIndex].style.opacity = '0.6';
+  images[prevIndex].style.pointerEvents = 'auto';
+  images[prevIndex].style.width = '12%';
+  images[prevIndex].style.left = '5%';
+  images[prevIndex].style.right = 'auto';
+  images[prevIndex].style.transform = 'translateY(-50%)';
+  images[prevIndex].style.zIndex = '2';
+
+  images[currentIndex].classList.add('active');
+  images[currentIndex].style.opacity = '1';
+  images[currentIndex].style.pointerEvents = 'auto';
+  images[currentIndex].style.width = '23%';
+  images[currentIndex].style.left = '50%';
+  images[currentIndex].style.right = 'auto';
+  images[currentIndex].style.transform = 'translate(-50%, -50%)';
+  images[currentIndex].style.zIndex = '3';
+
+  images[nextIndex].classList.add('next');
+  images[nextIndex].style.opacity = '0.6';
+  images[nextIndex].style.pointerEvents = 'auto';
+  images[nextIndex].style.width = '12%';
+  images[nextIndex].style.left = 'auto';
+  images[nextIndex].style.right = '5%';
+  images[nextIndex].style.transform = 'translateY(-50%)';
+  images[nextIndex].style.zIndex = '2';
+
+  // 오버레이 이미지는 항상 보여주기
+  if (overlayImage) {
+    overlayImage.style.opacity = '1';
+    overlayImage.style.pointerEvents = 'none';
+    overlayImage.style.zIndex = '4';
+  }
+}
+
+prevBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateCarousel();
+});
+
+nextBtn.addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateCarousel();
+});
+
+updateCarousel();
+
+
+// 탭
+const tabArea = document.getElementById('tabButtons');
+const tabImages = document.querySelectorAll('.tab-image');
+const hoverImages = [
+  'img/images/taste_hover1.png',
+  'img/images/taste_hover2.png',
+  'img/images/taste_hover3.png'
+];
+const defaultImage = 'img/images/taste_hoverX.png';
+const tabHeight = 75;
+let selectedIndex = -1;
+
+// 탭 초기 상태에서 기본 이미지 보여주기
+tabArea.style.backgroundImage = `url('${hoverImages[0]}')`;
+
+// 탭 버튼에 마우스가 올라갔을 때 미리보기 이미지 변경
+tabArea.addEventListener('mousemove', (e) => {
+  const rect = tabArea.getBoundingClientRect();
+  const mouseY = e.clientY - rect.top;
+  const tabIndex = Math.floor(mouseY / tabHeight);
+
+  // 마우스 위치에 맞는 hover 이미지 적용
+  if (hoverImages[tabIndex]) {
+    tabArea.style.backgroundImage = `url('${hoverImages[tabIndex]}')`;
+  }
+});
+
+// 탭 버튼 클릭 시 동작
+tabArea.addEventListener('click', (e) => {
+  const rect = tabArea.getBoundingClientRect();
+  const clickY = e.clientY - rect.top;
+  const tabIndex = Math.floor(clickY / tabHeight);
+
+  selectedIndex = tabIndex;
+
+  // 탭 이미지 전환
+  tabImages.forEach((img, i) => {
+    img.classList.toggle('active', i === tabIndex);
+  });
+
+  // 사이드 이미지 전환 (옆에 나오는 이미지)
+  const sideImages = document.querySelectorAll('.side-image');
+  sideImages.forEach((img, i) => {
+    if (i === tabIndex) {
+      img.classList.add('active');
+    } else {
+      img.classList.remove('active');
+    }
+  });
+
+  // 클릭된 탭에 맞는 hover 이미지 유지
+  tabArea.style.backgroundImage = `url('${hoverImages[tabIndex]}')`;
+});
+
+// 모달 열기
+document.querySelector('.button-image').addEventListener('click', () => {
+  document.getElementById('modal-overlay').style.display = 'flex';
+});
+
+// // 모달 닫기 (오버레이 클릭 시 닫힘)
+// document.getElementById('modal-overlay').addEventListener('click', () => {
+//   document.getElementById('modal-overlay').style.display = 'none';
+// });
+
+// X 버튼 클릭 시 모달 닫기
+document.querySelector('.close-btn').addEventListener('click', () => {
+  document.getElementById('modal-overlay').style.display = 'none';
+});
+
+// 스크롤이 발생하면 모달 닫기
+window.addEventListener('scroll', () => {
+  const modal = document.getElementById('modal-overlay');
+  if (modal.style.display === 'flex') {
+    modal.style.display = 'none';
+  }
+});
+
+// ===== 스크롤로 한 페이지씩 넘기기 =====
+let isScrolling = false; // 중복 방지용
+let currentSectionIndex = 0;
+const allSections = [...document.querySelectorAll('section')];
+
+function scrollToSection(index) {
+  const target = allSections[index];
+  const offset = target.offsetTop;
+  window.scrollTo({
+    top: offset,
+    behavior: 'smooth'
+  });
+}
+
+/* 페이지 4 캐로셀 */
+const screenImages = document.querySelectorAll('#phone-screen .screen-image');
+let currentImageIndex = 0;
+
+function showScreenImage(index) {
+  screenImages.forEach((img, i) => {
+    if(i === index) {
+      img.classList.add('active');
+    } else {
+      img.classList.remove('active');
+    }
+  });
+}
+
+document.getElementById('randomBtn').addEventListener('click', () => {
+  currentImageIndex = (currentImageIndex + 1) % screenImages.length;
+  showScreenImage(currentImageIndex);
+});
+
+// 초기 화면 설정
+showScreenImage(currentImageIndex);
+
+
+
+  </script>
+</body>
+</html>
